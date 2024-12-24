@@ -20,6 +20,10 @@ const commands = [
         name: "catvid",
         description: "Sends a random cat video.",
     },
+    {
+        name: "help",
+        description: "Sends a random cat video.",
+    },
 ];
 
 const rest = new REST({ version: "10"}).setToken(process.env.TOKEN);

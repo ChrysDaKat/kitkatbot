@@ -8,16 +8,16 @@ const fs = require('node:fs');
 
 
 
-
+// Function for the catpic and catvid commands
 function catAttatchment( commandName, fileExtensions ) {
-        // Call for where the images are on your computer
+        // Call for where the media files are on your computer
     const imageFolder = 'G:/catPicturesandVideos'; 
 
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isChatInputCommand()) return;
 
         if (interaction.commandName === commandName) {
-            await interaction.deferReply(); // Show "thinking" while fetching the image
+            await interaction.deferReply(); // Show "thinking" while fetching the file
 
             try {
                 // 1. Read file names
@@ -64,7 +64,7 @@ client.on("ready", (c) => {
     console.log(`${c.user.tag} is online.`);
 });
 
-// Logs messages so it is easy to know when and who messaged.
+// Logs messages so it is easy to know when and who messaged (for errors).
 client.on("messageCreate", (message) => {
     console.log(formattedTime, message.author.globalName + "(" + message.author.username + "):", message.content);
 })
@@ -73,7 +73,7 @@ client.on("messageCreate", (message) => {
 client.on("messageCreate", (message) => {
     
 
-    if (message.author.bot) {  // Checks to make sure message isnt coming from a bot.
+    if (message.author.bot) {  // Checks to make sure message isnt coming from a bot (without this the bot will loop).
         return;
     }
 
@@ -104,51 +104,33 @@ catAttatchment("catvid", ["mp4"]);
 
 
 
-/*
-// Call for where the images are on your computer
-const imageFolder = 'G:/catPicturesandVideos'; 
 
-client.on("interactionCreate", async (interaction) => {
+// This will be for the help command and show what you can do with this bot.
+
+client.on('interactionCreate', (interaction) => {
     if (!interaction.isChatInputCommand()) return;
-
-    if (interaction.commandName === "catpic") {
-        await interaction.deferReply(); // Show "thinking" while fetching the image
-
-        try {
-            // 1. Read image file names
-            const imageFiles = fs.readdirSync(imageFolder).filter(file => 
-                file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.gif')
-            );
-
-            if (imageFiles.length === 0) {
-                throw new Error('No image files found in the folder.'); 
-            }
-
-            // 2. Choose a random image
-            const randomImage = imageFiles[Math.floor(Math.random() * imageFiles.length)];
-
-            // 3. Construct the image path
-            const imagePath = `${imageFolder}/${randomImage}`;
-
-            // 4. Create the embed with the local image
-            const embed = new EmbedBuilder()
-                .setTitle("Here is a cat picture:")
-                .setColor("Random")
-                .setImage(`attachment://${randomImage}`); // Important: use 'attachment://'
-
-            // 5. Send the embed with the image file
-            interaction.editReply({ embeds: [embed], files: [imagePath] });
-
-        } catch (error) {
-            console.error('Error creating embed:', error);
-            interaction.editReply({ content: 'Oops! I couldn\'t create the embed.' });
-        }
-
-        console.log("The [" + interaction.commandName + "] command was issued.");
+  
+    if (interaction.commandName === 'help') {
+      const embed = new EmbedBuilder()
+        .setTitle('KitKatBot Help')
+        .setColor('Random')
+        .addFields(
+            { name: 'Passive Meow:', value: 'My bot will reply meow to you if the word meow is mentioned in a message!!!' },
+            { name: 'Commands', value: '⇩ ⇩ ⇩ ⇩ ⇩' },
+            { name: '/catpic', value: 'Shows a random picture of a car.' },
+            { name: '/catvid', value: 'Shows a random video of a car.' },
+            { name: '/meow', value: 'Just yells meow at you' },
+        );
+  
+      interaction.reply({ embeds: [embed] });
+  
+      console.log("The [" + interaction.commandName + "] command was issued.");
     }
+  
+  });
+        
+//console.log("The [" + interaction.commandName + "] command was issued.");
 
-});
-*/
 
 
 
